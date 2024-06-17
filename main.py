@@ -2,6 +2,8 @@ from sklearn.datasets import fetch_openml
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, classification_report
+import numpy as np
 
 
 class MNISTClassifier:
@@ -35,13 +37,22 @@ class MNISTClassifier:
         plt.show()
 
     def train_model(self):
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
+        X_train, self.X_test, y_train, self.y_test = train_test_split(
             self.X, self.y, test_size=self.test_size, random_state=self.random_state)
         self.gnb = GaussianNB()
-        self.gnb.fit(self.X_train, self.y_train)
+        self.gnb.fit(X_train, y_train)
+
+    def evaluate_model(self):
+        y_pred = self.gnb.predict(self.X_test)
+        error_rates = np.zeros(10)
+        for i in range(10):
+            error_rates[i] = 1 - np.mean(y_pred[self.y_test == i] == i)
+        report = classification_report(self.y_test, y_pred)
+        print(report)
 
 
 if __name__ == "__main__":
     mnist_classifier = MNISTClassifier()
     mnist_classifier.show_sample_images()
     mnist_classifier.train_model()
+    mnist_classifier.evaluate_model()
