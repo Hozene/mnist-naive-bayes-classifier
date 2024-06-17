@@ -2,7 +2,7 @@ from sklearn.datasets import fetch_openml
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 import numpy as np
 
 
@@ -31,7 +31,7 @@ class MNISTClassifier:
         plt.figure(figsize=(10, 4))
         for i in range(num_samples):
             plt.subplot(1, num_samples, i + 1)
-            plt.imshow(self.images[i])
+            plt.imshow(self.images[i], cmap='gray')
             plt.title(f"Label: {self.labels[i]}")
             plt.axis('off')
         plt.show()
@@ -43,12 +43,18 @@ class MNISTClassifier:
         self.gnb.fit(X_train, y_train)
 
     def evaluate_model(self):
-        y_pred = self.gnb.predict(self.X_test)
+        self.y_pred = self.gnb.predict(self.X_test)
         error_rates = np.zeros(10)
         for i in range(10):
-            error_rates[i] = 1 - np.mean(y_pred[self.y_test == i] == i)
-        report = classification_report(self.y_test, y_pred)
+            error_rates[i] = 1 - np.mean(self.y_pred[self.y_test == i] == i)
+        report = classification_report(self.y_test, self.y_pred)
         print(report)
+
+    def plot_confusion_matrix(self):
+        cm = confusion_matrix(self.y_test, self.y_pred)
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+        disp.plot(cmap=plt.cm.Blues)
+        plt.show()
 
 
 if __name__ == "__main__":
@@ -56,3 +62,4 @@ if __name__ == "__main__":
     mnist_classifier.show_sample_images()
     mnist_classifier.train_model()
     mnist_classifier.evaluate_model()
+    mnist_classifier.plot_confusion_matrix()
