@@ -13,8 +13,9 @@ Alternatively you can download a csv version from Kaggle:
 The following Python packages are required to run the script:
 - matplotlib
 - scikit-learn
+- numpy
 
 You can install these packages using pip:
 ```bash
-pip install matplotlib scikit-learn
+pip install matplotlib scikit-learn numpy
 ```

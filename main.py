@@ -2,7 +2,7 @@ from sklearn.datasets import fetch_openml
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import classification_report
 import numpy as np
 
 
